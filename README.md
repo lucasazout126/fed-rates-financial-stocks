@@ -1,244 +1,126 @@
 # 📈 Fed Interest Rate Changes & Financial Sector Stock Performance
 
-## 👥 Team Members
-Isaac Toffel (Project Lead)  
-Alan Chau  
-Julian Antropow de la Hoz  
-Armaan Gupta  
-Lucas Azout  
-Mahishi Murarka  
+A machine learning project that explores whether Federal Reserve interest rate decisions can predict short-term stock performance for major financial institutions.
+
+## Team
+Isaac Toffel · Alan Chau · Julian Antropow de la Hoz · Lucas Azout  
 
 ---
 
-## 📌 Project Overview
+## Overview
 
-This project examines the relationship between Federal Reserve interest rate decisions and the stock performance of major financial institutions.
-
-By combining macroeconomic policy data from the Federal Reserve with equity market data, we develop machine learning models to determine whether financial sector stocks outperform or underperform the S&P 500 following Federal Open Market Committee (FOMC) rate changes.
-
-The project answers a practical, investor-focused question:
-
-**Can we predict financial sector performance based on shifts in Federal Reserve monetary policy?**
+This project combines macroeconomic policy data from the Federal Reserve with equity market data to predict whether financial sector stocks will outperform or underperform the S&P 500 in the 30 days following an FOMC rate decision.
 
 ---
 
-## ❓ Research Question
+## Data Sources
 
-Do Federal Reserve interest rate changes predict short-term stock performance for financial sector companies, and does this relationship vary based on the magnitude and direction of the rate change?
-
----
-
-## 🎯 Key Objectives
-
-- Build an automated data pipeline to collect Fed rate decisions and daily stock prices  
-- Engineer features such as rate change magnitude, volatility windows, and technical indicators  
-- Develop classification models predicting relative performance in 30-day windows after rate changes  
-- Evaluate model performance using accuracy, precision, recall, and F1-score  
-- Create an interactive web application for exploring historical trends and testing hypothetical scenarios  
+- **[FRED API](https://fred.stlouisfed.org/)** — Federal funds rate history and FOMC meeting dates
+- **[Yahoo Finance (yfinance)](https://pypi.org/project/yfinance/)** — Daily stock prices for JPM, GS, BAC, WFC, C, MS, and SPY
 
 ---
 
-## 📊 Data Sources
+## Project Structure
 
-### Federal Reserve Economic Data (FRED API)
-- Historical Federal Funds Rate  
-- FOMC meeting dates  
-- Macroeconomic indicators  
-
-Free access with API key.
-
-### Alpha Vantage API
-- Daily stock prices for 10–15 major financial institutions:
-  - JPMorgan Chase (JPM)
-  - Goldman Sachs (GS)
-  - Bank of America (BAC)
-  - Wells Fargo (WFC)
-  - Citigroup (C)
-  - Morgan Stanley (MS)
-- S&P 500 index data  
-
-Free tier provides 500 API calls per day.
-
----
-
-## 🏗 Required Deliverables
-
-### Structured Database
-PostgreSQL or MongoDB storing:
-- FRED data  
-- Stock price data  
-- Engineered features  
-
-### Machine Learning Model
-Trained classification model evaluated using:
-- Accuracy  
-- Precision  
-- Recall  
-- F1-score  
-
-### Data Pipeline
-Automated API collection scripts with:
-- Error handling  
-- Rate limit management  
-- Scheduling capability  
-
-### Web Application
-Interactive dashboard (Streamlit) that displays:
-- Historical analysis  
-- Visualizations  
-- Model predictions  
-- Scenario testing  
-
-### GitHub Repository
-Complete, well-documented codebase with setup instructions and version control.
-
----
-
-## 🧠 Modeling Approach
-
-We treat this as a binary classification problem.
-
-Target variable:
-1 → Financial sector outperforms the S&P 500 within 30 days of a rate decision  
-0 → Underperforms  
-
-Example models:
-- Logistic Regression  
-- Random Forest  
-- Other classification algorithms  
-
-Feature importance analysis is used to understand which macroeconomic and technical indicators most influence predictions.
-
----
-
-## 🗂 Project Structure
-
+```
 fed-rates-financial-stocks/
-
-├── README.md  
-├── requirements.txt  
-├── .env.example  
-├── .gitignore  
-│  
-├── src/  
-│   ├── data_pipeline.py   # API data collection  
-│   ├── features.py        # Feature engineering  
-│   ├── model.py           # Model training & evaluation  
-│   └── app.py             # Streamlit dashboard  
-│  
-├── notebooks/             # Exploratory analysis  
-├── data/                  # Raw and processed data (ignored)  
-└── tests/                 # Optional unit tests  
+├── src/
+│   ├── data_pipeline.py   # Data collection → PostgreSQL
+│   ├── features.py        # Feature engineering
+│   ├── model.py           # Model training & evaluation
+│   └── app.py             # Streamlit dashboard
+├── notebooks/             # Exploratory analysis
+├── data/                  # Saved model (gitignored)
+├── requirements.txt
+├── .env.example
+└── .gitignore
+```
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup
 
-### 1. Clone the Repository
+### 1. Clone the repo
 
-git clone <repository-url>  
-cd fed-rates-financial-stocks  
+```bash
+git clone <repository-url>
+cd fed-rates-financial-stocks
+```
 
----
+### 2. Create a virtual environment
 
-### 2. Create a Virtual Environment
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+```
 
-Mac / Linux:
+### 3. Install dependencies
 
-python -m venv venv  
-source venv/bin/activate  
+```bash
+pip install -r requirements.txt
+```
 
-Windows:
+### 4. Set up PostgreSQL
 
-python -m venv venv  
-venv\Scripts\activate  
+```bash
+psql -U postgres -h localhost
+```
+```sql
+CREATE DATABASE fed_rates_db;
+\q
+```
 
----
+### 5. Configure environment variables
 
-### 3. Install Dependencies
+```bash
+cp .env.example .env
+```
 
-pip install -r requirements.txt  
+```
+FRED_API_KEY=your_fred_api_key
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=fed_rates_db
+DB_USER=postgres
+DB_PASSWORD=your_postgres_password
+```
 
----
-
-### 4. Add API Keys
-
-Copy the environment template:
-
-cp .env.example .env  
-
-Then add your keys:
-
-FRED_API_KEY=your_key  
-ALPHAVANTAGE_API_KEY=your_key  
-
----
-
-## 🚀 Running the Project
-
-Run data collection:
-
-python src/data_pipeline.py  
-
-Run feature engineering:
-
-python src/features.py  
-
-Train the model:
-
-python src/model.py  
-
-Launch the dashboard:
-
-streamlit run src/app.py  
+Get a free FRED API key [here](https://fred.stlouisfed.org/docs/api/api_key.html).
 
 ---
 
-## 📈 Example Features
+## Usage
 
-- Rate change magnitude (basis points)  
-- Direction (hike, cut, hold)  
-- Rolling returns  
-- Volatility windows  
-- Technical indicators  
-- Relative performance vs S&P 500  
+```bash
+# Collect data
+python src/data_pipeline.py
 
----
+# Engineer features
+python src/features.py
 
-## 🌐 Web Application
+# Train model
+python src/model.py
 
-The dashboard allows users to:
-
-- Explore historical Fed rate changes  
-- Visualize stock performance trends  
-- View model predictions  
-- Test hypothetical rate scenarios  
+# Launch dashboard
+streamlit run src/app.py
+```
 
 ---
 
-## 🛠 Tech Stack
+## Results
 
-- Python  
-- pandas  
-- numpy  
-- scikit-learn  
-- requests  
-- Streamlit 
-- PostgreSQL or MongoDB  
+Three classifiers were trained and evaluated using 5-fold cross-validation. Gradient Boosting performed best with an F1-score of 0.661.
+
+The most predictive features were the rate level before the meeting, pre-meeting stock volatility, and 30-day momentum — suggesting that the broader rate environment matters more than the size or direction of any individual rate change.
 
 ---
 
-## 📌 Expected Outcomes
+## Tech Stack
 
-By the end of the semester, we will:
-
-- Validate whether Fed rate changes provide predictive power  
-- Identify the most important macroeconomic and technical features  
-- Deploy a live interactive dashboard  
-- Deliver a reproducible end-to-end financial data science pipeline  
+Python · pandas · scikit-learn · yfinance · Streamlit · Plotly · PostgreSQL
 
 ---
 
-## 📜 License
+## License
 
-MIT License
+MIT

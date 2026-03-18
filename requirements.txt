@@ -1,8 +1,9 @@
 pandas
 numpy
-requests
 scikit-learn
-streamlit
+psycopg2-binary
 python-dotenv
-matplotlib
-seaborn
+requests
+yfinance
+streamlit
+plotly
