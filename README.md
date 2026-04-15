@@ -3,7 +3,10 @@
 A machine learning project that explores whether Federal Reserve interest rate decisions can predict short-term stock performance for major financial institutions.
 
 ## Team
-Isaac Toffel · Alan Chau · Julian Antropow de la Hoz · Lucas Azout  
+Isaac Toffel · Alan Chau · Julian Antropow de la Hoz · Lucas Azout
+
+## Live Demo
+[View the app](https://fed-rates-financial-stocks-syqht5dtrflwacfhrfjkw7.streamlit.app)
 
 ---
 
@@ -60,17 +63,7 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Set up PostgreSQL
-
-```bash
-psql -U postgres -h localhost
-```
-```sql
-CREATE DATABASE fed_rates_db;
-\q
-```
-
-### 5. Configure environment variables
+### 4. Configure environment variables
 
 ```bash
 cp .env.example .env
@@ -78,30 +71,30 @@ cp .env.example .env
 
 ```
 FRED_API_KEY=your_fred_api_key
-DB_HOST=localhost
+DB_HOST=your_supabase_host
 DB_PORT=5432
-DB_NAME=fed_rates_db
-DB_USER=postgres
-DB_PASSWORD=your_postgres_password
+DB_NAME=postgres
+DB_USER=your_supabase_user
+DB_PASSWORD=your_supabase_password
 ```
 
-Get a free FRED API key [here](https://fred.stlouisfed.org/docs/api/api_key.html).
+Get a free FRED API key [here](https://fred.stlouisfed.org/docs/api/api_key.html). Database credentials are available from the project owner.
 
 ---
 
 ## Usage
 
 ```bash
-# Collect data
-python src/data_pipeline.py
-
-# Engineer features
-python src/features.py
-
-# Train model
-python src/model.py
-
 # Launch dashboard
+streamlit run src/app.py
+```
+
+To re-run the full pipeline from scratch:
+
+```bash
+python src/data_pipeline.py
+python src/features.py
+python src/model.py
 streamlit run src/app.py
 ```
 
@@ -117,7 +110,7 @@ The most predictive features were the rate level before the meeting, pre-meeting
 
 ## Tech Stack
 
-Python · pandas · scikit-learn · yfinance · Streamlit · Plotly · PostgreSQL
+Python · pandas · scikit-learn · yfinance · Streamlit · Plotly · PostgreSQL · Supabase
 
 ---
 
